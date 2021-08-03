@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,15 +20,19 @@ public class ProjectController {
 
     private ProjectService projectService;
 
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectInfo save(@RequestBody ProjectCreateCommand command) {
+    public ProjectInfo save(@Valid @RequestBody ProjectCreateCommand command) {
         return projectService.saveProject(command);
     }
 
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<ProjectInfo> findAll() {
-//        return projectService.listProjects();
-//    }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProjectInfo> findAll() {
+        return projectService.listProjects();
+    }
 }

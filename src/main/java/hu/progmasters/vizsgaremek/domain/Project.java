@@ -18,12 +18,12 @@ public class Project {
 
     private String name;
 
-//    @OneToOne
-//    private Employee leader;
-//
-//    @OneToMany(mappedBy = "project")
-//    private List<Employee> members;
-//
+    @OneToOne
+    private Employee leader;
+
+    @OneToMany(mappedBy = "project")
+    private List<Employee> members;
+
     private int totalWorkTime;
 
 }
