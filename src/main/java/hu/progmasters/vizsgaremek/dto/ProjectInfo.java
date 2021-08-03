@@ -11,8 +11,8 @@ public class ProjectInfo {
 
     private int id;
     private String name;
-    private EmployeeInfo leader;
-    private List<EmployeeInfo> members;
-    private double totalWorkTime;
+//    private EmployeeInfo leader;
+//    private List<EmployeeInfo> members;
+    private int totalWorkTime;
 
 }
