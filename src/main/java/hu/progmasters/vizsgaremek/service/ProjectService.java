@@ -4,6 +4,7 @@ import hu.progmasters.vizsgaremek.domain.Project;
 import hu.progmasters.vizsgaremek.dto.EmployeeInfo;
 import hu.progmasters.vizsgaremek.dto.ProjectCreateCommand;
 import hu.progmasters.vizsgaremek.dto.ProjectInfo;
+import hu.progmasters.vizsgaremek.dto.ProjectUpdateCommand;
 import hu.progmasters.vizsgaremek.repository.EmployeeRepository;
 import hu.progmasters.vizsgaremek.repository.ProjectRepository;
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,15 @@ public class ProjectService {
         Project toSave = modelMapper.map(command, Project.class);
         return modelMapper.map(projectRepository.saveProject(toSave), ProjectInfo.class);
     }
+
+    public ProjectInfo findProject(Integer id) {
+        return modelMapper.map(projectRepository.findById(id),ProjectInfo.class);
+    }
+
+//    public ProjectInfo updateProject(ProjectUpdateCommand command) {
+//
+//
+//    }
 
     public List<ProjectInfo> listProjects() {
         List<Project> projects = projectRepository.findAll();

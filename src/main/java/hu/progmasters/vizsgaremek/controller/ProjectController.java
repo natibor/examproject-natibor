@@ -35,4 +35,10 @@ public class ProjectController {
     public List<ProjectInfo> findAll() {
         return projectService.listProjects();
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectInfo findProject(@PathVariable int id) {
+        return projectService.findProject(id);
+    }
 }

@@ -18,6 +18,15 @@ public class ProjectRepository {
         return toSave;
     }
 
+    public Project findById(Integer id) {
+        return entityManager.find(Project.class, id);
+    }
+
+    public Project updateProject(Project toUpdate) {
+        entityManager.refresh(toUpdate);
+        return toUpdate;
+    }
+
     public List<Project> findAll() {
         return entityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList();
     }
