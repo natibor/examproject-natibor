@@ -1,7 +1,6 @@
 package hu.progmasters.vizsgaremek.dto;
 
 
-import hu.progmasters.vizsgaremek.domain.JobTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,5 @@ public class EmployeeCreateCommand {
 
     @NotBlank(message = "Can't be blank!")
     private String name;
-
-    private JobTime jobTime;
 
 }

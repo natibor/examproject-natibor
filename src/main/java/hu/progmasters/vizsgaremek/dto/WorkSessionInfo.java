@@ -3,17 +3,13 @@ package hu.progmasters.vizsgaremek.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
-public class EmployeeInfo {
+public class WorkSessionInfo {
 
     private int id;
-    private String name;
+    private int employeeId;
+    private  int projectId;
     private double bookedHours;
-    private int workedDays;
-    private boolean active;
-    private List<String> projects;
 
 }

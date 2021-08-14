@@ -16,12 +16,9 @@ public class Employee {
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private JobTime jobTime;
+    private double bookedHours;
 
-    private int workTime;
+    private int workedDays;
 
-    @ManyToOne
-    private Project project;
-
+    private boolean active = true;
 }

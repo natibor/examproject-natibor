@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class WorkTimeRecordApp {
+public class WorkTimeRegisterApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(WorkTimeRecordApp.class, args);
+        SpringApplication.run(WorkTimeRegisterApp.class, args);
     }
 
     @Bean

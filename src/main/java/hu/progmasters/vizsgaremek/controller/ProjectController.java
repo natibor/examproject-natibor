@@ -39,6 +39,22 @@ public class ProjectController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProjectInfo findProject(@PathVariable int id) {
+        LOGGER.info(String.format("GET - Find project with id: %s", id));
         return projectService.findProject(id);
     }
+
+    @PutMapping("/{projectId}/leader/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectInfo setProjectLeader(@PathVariable int projectId, @PathVariable int employeeId) {
+        LOGGER.info(String.format("PUT - Set leader with employeeId %s for project %s", employeeId, projectId));
+        return projectService.setProjectLeader(projectId, employeeId);
+    }
+
+    @PutMapping("/{projectId}/member/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectInfo setProjectMember(@PathVariable int projectId, @PathVariable int employeeId) {
+        LOGGER.info(String.format("PUT - Set member with employeeId %s for project %s", employeeId, projectId));
+        return projectService.setProjectMember(projectId, employeeId);
+    }
+
 }

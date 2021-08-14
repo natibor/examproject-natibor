@@ -1,6 +1,5 @@
 package hu.progmasters.vizsgaremek.controller;
 
-
 import hu.progmasters.vizsgaremek.dto.EmployeeCreateCommand;
 import hu.progmasters.vizsgaremek.dto.EmployeeInfo;
 import hu.progmasters.vizsgaremek.service.EmployeeService;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/employee")
@@ -34,9 +32,23 @@ public class EmployeeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EmployeeInfo> listEmployees () {
+    public List<EmployeeInfo> listEmployees() {
         LOGGER.info("GET - List all employees");
         return employeeService.listEmployees();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeInfo findEmployee(@PathVariable int id) {
+        LOGGER.info(String.format("GET - Find employee with id: %s", id));
+        return employeeService.findEmployee(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteEmployee(@PathVariable int id) {
+        LOGGER.info(String.format("DELETE - Delete employee with id: %s", id));
+        employeeService.deleteEmployee(id);
     }
 
 }

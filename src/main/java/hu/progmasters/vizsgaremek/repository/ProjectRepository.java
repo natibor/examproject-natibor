@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProjectRepository {
@@ -18,12 +19,13 @@ public class ProjectRepository {
         return toSave;
     }
 
-    public Project findById(Integer id) {
-        return entityManager.find(Project.class, id);
+    public Optional<Project> findById(Integer id) {
+        Project found = entityManager.find(Project.class, id);
+        return found != null ? Optional.of(found) : Optional.empty();
     }
 
     public Project updateProject(Project toUpdate) {
-        entityManager.refresh(toUpdate);
+        entityManager.merge(toUpdate);
         return toUpdate;
     }
 
