@@ -11,5 +11,5 @@ public class ProjectInfo {
     private String name;
     private String description;
     private EmployeeInfo leader;
-    private boolean active;
+    private double totalWorkHours;
 }

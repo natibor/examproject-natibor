@@ -24,4 +24,11 @@ public class WorkSessionRepository {
                 .setParameter(1, employeeId).getResultList();
     }
 
+    public List<WorkSession> findByProjectId(Integer projectId) {
+        return entityManager.createQuery(
+                        "SELECT w FROM WorkSession w WHERE w.projectId = (?1)", WorkSession.class)
+                .setParameter(1, projectId).getResultList();
+    }
+
+
 }

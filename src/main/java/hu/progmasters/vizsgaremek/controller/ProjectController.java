@@ -50,11 +50,13 @@ public class ProjectController {
         return projectService.setProjectLeader(projectId, employeeId);
     }
 
-    @PutMapping("/{projectId}/member/{employeeId}")
+
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectInfo setProjectMember(@PathVariable int projectId, @PathVariable int employeeId) {
-        LOGGER.info(String.format("PUT - Set member with employeeId %s for project %s", employeeId, projectId));
-        return projectService.setProjectMember(projectId, employeeId);
+    public void deleteEmployee(@PathVariable int id) {
+        LOGGER.info(String.format("DELETE - Delete project with id: %s", id));
+        projectService.deleteProject(id);
     }
+
 
 }

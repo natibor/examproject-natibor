@@ -21,6 +21,9 @@ public class EmployeeRepository {
 
     public Optional<Employee> findById(Integer id) {
         Employee found = entityManager.find(Employee.class, id);
+        if (!found.isActive()) {
+            found = null;
+        }
         return found != null ? Optional.of(found) : Optional.empty();
     }
 
@@ -30,7 +33,7 @@ public class EmployeeRepository {
     }
 
     public List<Employee> findAll() {
-        return entityManager.createQuery("SELECT e FROM Employee e", Employee.class).getResultList();
+        return entityManager.createQuery("SELECT e FROM Employee e WHERE e.active = true", Employee.class).getResultList();
     }
 
 }
