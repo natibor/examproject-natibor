@@ -18,8 +18,8 @@ public class WorkSessionCreateCommand {
     private int projectId;
 
     @NotNull(message = "Can't be null!")
-    @Min(value = 1,message = "Booking less than 1 hour is not allowed!")
-    @Max(value = 12,message = "Booking more than 12 hours is not allowed!")
+    @Min(value = 1, message = "Booking less than 1 hour is not allowed!")
+    @Max(value = 12, message = "Booking more than 12 hours is not allowed!")
     private double bookedHours;
 
 }

@@ -15,11 +15,11 @@ public class WorkSession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     private int employeeId;
 
-    private  int projectId;
+    private int projectId;
 
     private double bookedHours;
 

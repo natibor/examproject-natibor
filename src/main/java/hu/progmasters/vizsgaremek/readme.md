@@ -10,9 +10,10 @@ A dolgozókról a következő adatokat tároljuk a rendszerben: név, munkával 
 
 ### Projektek - Project
 
-A projektekről az alábbi információkat rögzítjük: név, kezdő és záró dátum, leírás, valamint a kiállításra szóló sztenderd belépőjegy ára. Egy múzeumnak akár több párhuzamosan futó kiállítása is lehet, míg egy kiállítás csak egy intézményhez tartozhat.
+A projektekről az alábbi információkat rögzítjük: név, leírás
 
 ### Munkamenet - WorkSession
+
 
 
 
