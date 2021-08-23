@@ -6,6 +6,7 @@ import hu.progmasters.vizsgaremek.domain.WorkSession;
 import hu.progmasters.vizsgaremek.dto.*;
 import hu.progmasters.vizsgaremek.exception.EmployeeNotFoundException;
 import hu.progmasters.vizsgaremek.exception.ProjectNotFoundException;
+import hu.progmasters.vizsgaremek.exception.WorkSessionNotFoundException;
 import hu.progmasters.vizsgaremek.repository.EmployeeRepository;
 import hu.progmasters.vizsgaremek.repository.ProjectRepository;
 import hu.progmasters.vizsgaremek.repository.WorkSessionRepository;
@@ -41,7 +42,7 @@ public class WorkTimeService {
 
     public EmployeeInfo saveEmployee(EmployeeCreateCommand command) {
         Employee employee = modelMapper.map(command, Employee.class);
-        return modelMapper.map(employeeRepository.saveEmployee(employee), EmployeeInfo.class);
+        return modelMapper.map(employeeRepository.save(employee), EmployeeInfo.class);
     }
 
     protected Employee findEmployee(Integer id) {
@@ -80,14 +81,14 @@ public class WorkTimeService {
     public Employee deleteEmployee(int id) {
         Employee toDelete = findEmployee(id);
         toDelete.setActive(false);
-        return employeeRepository.updateEmployee(toDelete);
+        return employeeRepository.update(toDelete);
     }
 
 // Project methods
 
     public ProjectInfo saveProject(ProjectCreateCommand command) {
         Project toSave = modelMapper.map(command, Project.class);
-        return modelMapper.map(projectRepository.saveProject(toSave), ProjectInfo.class);
+        return modelMapper.map(projectRepository.save(toSave), ProjectInfo.class);
     }
 
     public Project findProject(Integer id) {
@@ -119,7 +120,7 @@ public class WorkTimeService {
     public void deleteProject(int id) {
         Project toDelete = findProject(id);
         toDelete.setInProgress(false);
-        projectRepository.updateProject(toDelete);
+        projectRepository.update(toDelete);
     }
 
 // WorkSession methods
@@ -127,19 +128,21 @@ public class WorkTimeService {
     public WorkSessionInfo saveWorkSession(WorkSessionCreateCommand command) {
         WorkSession toSave = modelMapper.map(command, WorkSession.class);
         workSessionRepository.save(toSave);
-        Employee toUpdate = employeeRepository.findById(command.getEmployeeId()).get();
-        Project toAdd = projectRepository.findById(command.getProjectId()).get();
+        Employee toUpdate = findEmployee(command.getEmployeeId());
+        Project toAdd = findProject(command.getProjectId());
         List<Project> projects = toUpdate.getProjects();
-        projects.add(toAdd);
-        toUpdate.setProjects(projects);
-        employeeRepository.updateEmployee(toUpdate);
+        if (!projects.contains(toAdd)) {
+            projects.add(toAdd);
+            toUpdate.setProjects(projects);
+            employeeRepository.update(toUpdate);
+        }
         return showWorkSessionDetails(toSave.getId());
     }
 
     public WorkSession findWorkSession(Long id) {
         Optional<WorkSession> workSession = workSessionRepository.findById(id);
         if (workSession.isEmpty()) {
-            throw new ProjectNotFoundException();
+            throw new WorkSessionNotFoundException();
         }
         return workSession.get();
     }
@@ -172,7 +175,7 @@ public class WorkTimeService {
         return showWorkSessionDetails(id);
     }
 
-    public void deleteWorkSession(Long id) {
+    public void deleteWorkSession (Long id) {
         workSessionRepository.delete(findWorkSession(id));
     }
 }

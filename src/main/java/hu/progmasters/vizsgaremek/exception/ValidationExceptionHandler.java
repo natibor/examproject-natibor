@@ -23,13 +23,18 @@ public class ValidationExceptionHandler {
         return new ResponseEntity<List<ValidationError>>(validationErrors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ProjectNotFoundException.class)
-    public ResponseEntity<HttpStatus> handlePresentationNotFoundException() {
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    public ResponseEntity<HttpStatus> handleEmployeeNotFoundException() {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(EmployeeNotFoundException.class)
-    public ResponseEntity<HttpStatus> handleParticipantNotFoundException() {
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<HttpStatus> handleProjectNotFoundException() {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(WorkSessionNotFoundException.class)
+    public ResponseEntity<HttpStatus> handleWorkSessionNotFoundException() {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

@@ -1,14 +1,12 @@
 spring:
   datasource:
-    # ez az URL kell akkor, ha csak az adatbázis fut konténerben, az alkalmazást meg IDEA-ból vagy külön indítjátok el
     url: jdbc:mysql://127.0.0.1:3307/WorkTimedAppDB?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
-    # ez az URL kell akkor, ha az adatbázist és az alkalmazást is konténerizálva futtatjátok
-#    url: jdbc:mysql://videogamedb/videogame?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+#    url: jdbc:mysql://worktimedb:3307/WorkTimeAppDB?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
     username: root
     password: 1234
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

@@ -30,7 +30,7 @@ public class EmployeeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Save new employee")
-    public EmployeeInfo saveEmployee(
+    public EmployeeInfo save(
             @Parameter(description = "Name of the new employee")
             @Valid @RequestBody EmployeeCreateCommand command) {
         LOGGER.info(String.format("POST - Save new employee: %s", command));
@@ -40,7 +40,7 @@ public class EmployeeController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "List all active employees")
-    public List<EmployeeInfo> listEmployees() {
+    public List<EmployeeInfo> list() {
         LOGGER.info("GET - List all active employees");
         return service.listEmployees();
     }
@@ -48,7 +48,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Find an employee by ID")
-    public EmployeeInfo findEmployee(
+    public EmployeeInfo find(
             @Parameter(description = "ID of the employee")
             @PathVariable int id) {
         LOGGER.info(String.format("GET - Find employee with id: %s", id));
@@ -60,7 +60,7 @@ public class EmployeeController {
     @Operation(
             summary = "Delete an employee by ID",
             description = "This operation sets the employee inactive, but don't removes him/her from the database.")
-    public void deleteEmployee(
+    public void delete(
             @Parameter(description = "ID of the employee")
             @PathVariable int id) {
         LOGGER.info(String.format("DELETE - Delete employee with id: %s", id));

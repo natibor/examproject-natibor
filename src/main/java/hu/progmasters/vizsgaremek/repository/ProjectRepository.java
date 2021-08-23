@@ -14,7 +14,7 @@ public class ProjectRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Project saveProject(Project toSave) {
+    public Project save(Project toSave) {
         entityManager.persist(toSave);
         return toSave;
     }
@@ -24,7 +24,7 @@ public class ProjectRepository {
         return found != null ? Optional.of(found) : Optional.empty();
     }
 
-    public Project updateProject(Project toUpdate) {
+    public Project update(Project toUpdate) {
         entityManager.merge(toUpdate);
         return toUpdate;
     }

@@ -1,31 +1,35 @@
-# Vizsgaremek
+# Munkaidő nyilvántartás applikáció
 
-A feladatod egy backend API projekt elkészítése, általad választott témában.  
-A témákhoz összeszedtünk néhány ötletet, kérlek írd be magad ahhoz a témához, amit te választanál. Érdemes mindenkinek egyedi alkalmazást készíteni, próbáljatok meg osztozkodni a témákon.  
-Nem csak ezek közül a témák közül lehet választani, ha saját ötleted van, akkor nyugodtan írd hozzá a listához.
+Az applikáció célja, hogy nyilvántartsa a dolgozókat és projekteket, valamint rögzítse a munkávál töltött időt.
 
-[témaötletek](https://docs.google.com/document/d/1F30RkobWaX8L44ikgZ3GXKc0w7bEcgfUXIGEzSGSwHM/edit?usp=sharing)
+## Főbb egységek
 
-## Követelmények
+### Dolgozók - Employee
 
-* Maven projekt
-* Spring Boot alkalmazás
-* REST API, Swagger, OpenAPI dokumentáció
-* SQL backend (pl. MySQL, MariaDB)
-* Flyway sémamigráció, SQL táblalétrehozás, adatbetöltés
-* Hibakezelés
-* Spring Data JPA repository
-* Integrációs tesztek
-* Konténerizált alkalmazás
+A dolgozókról a következő adatokat tároljuk a rendszerben: név, munkával töltött órák száma és munkanapok száma.
 
-## Feladat nagysága
+### Projektek - Project
 
-* Legalább két 1-n kapcsolatban lévő tábla
-* Legalább két SQL migráció
-* Legalább két entitás
-* Legalább két controller
-* Minden bemenő paraméter validálása
-* Legalább egy property beolvasása
-* Minden HTTP metódusra legalább egy végpont (`GET`, `POST`, `PUT`, `DELETE`)
-* Legalább 60%-os tesztlefedettség, amely tartalmaz egység és integrációs teszteket is
-* Egy `Dockerfile`
+A projektekről az alábbi információkat rögzítjük: név, leírás
+
+### Munkamenet - WorkSession
+
+
+
+
+## Végpontok
+
+
+
+
+
+## Docker parancsok
+
+Adatbázis konténer létrehozása és indítása:
+docker run --name WorkTimeAppDB --network worktimenetwork -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_DATABASE=worktime -d -p 3307:3306 mysql:latest
+
+Alkalmazás image létrehozása:
+docker build -t worktimeapp .
+
+Alkalmazás konténer létrehozása és indítása:
+docker run --name WorkTimeApp --network worktimenetwork -p 8080:8080 -d worktimeapp tail -f /dev/null

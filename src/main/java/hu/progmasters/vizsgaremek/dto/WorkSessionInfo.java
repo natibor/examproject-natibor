@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WorkSessionInfo {
 
-    private long id;
+    private Long id;
     private String employeeName;
     private String projectName;
     private double bookedHours;

@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EmployeeInfo {
 
-    private int id;
+    private Integer id;
     private String name;
     private double bookedHours;
     private int workedDays;

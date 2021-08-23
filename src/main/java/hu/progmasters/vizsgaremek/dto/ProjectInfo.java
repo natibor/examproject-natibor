@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjectInfo {
 
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private boolean inProgress;

@@ -14,7 +14,7 @@ public class EmployeeRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Employee saveEmployee(Employee toSave) {
+    public Employee save(Employee toSave) {
         entityManager.persist(toSave);
         return toSave;
     }
@@ -24,7 +24,7 @@ public class EmployeeRepository {
         return found != null ? Optional.of(found) : Optional.empty();
     }
 
-    public Employee updateEmployee(Employee toUpdate) {
+    public Employee update(Employee toUpdate) {
         entityManager.merge(toUpdate);
         return toUpdate;
     }
