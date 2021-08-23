@@ -1,5 +1,6 @@
 package hu.progmasters.vizsgaremek.dto;
 
+import hu.progmasters.vizsgaremek.domain.Project;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,5 @@ public class EmployeeInfo {
     private double bookedHours;
     private int workedDays;
     private boolean active;
-    private List<String> projects;
-
+    private List<Project> projects;
 }

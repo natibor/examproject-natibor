@@ -2,11 +2,10 @@ package hu.progmasters.vizsgaremek.controller;
 
 import hu.progmasters.vizsgaremek.dto.EmployeeCreateCommand;
 import hu.progmasters.vizsgaremek.dto.EmployeeInfo;
-import hu.progmasters.vizsgaremek.service.EmployeeService;
+import hu.progmasters.vizsgaremek.service.WorkTimeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.tags.Tags;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,16 +15,16 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employees")
 @Tag(name = "Operations on Employees")
 public class EmployeeController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
 
-    private final EmployeeService employeeService;
+    private final WorkTimeService service;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public EmployeeController(WorkTimeService service) {
+        this.service = service;
     }
 
     @PostMapping
@@ -35,15 +34,15 @@ public class EmployeeController {
             @Parameter(description = "Name of the new employee")
             @Valid @RequestBody EmployeeCreateCommand command) {
         LOGGER.info(String.format("POST - Save new employee: %s", command));
-        return employeeService.saveEmployee(command);
+        return service.saveEmployee(command);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "List all active employees")
     public List<EmployeeInfo> listEmployees() {
-        LOGGER.info("GET - List all employees");
-        return employeeService.listEmployees();
+        LOGGER.info("GET - List all active employees");
+        return service.listEmployees();
     }
 
     @GetMapping("/{id}")
@@ -53,7 +52,7 @@ public class EmployeeController {
             @Parameter(description = "ID of the employee")
             @PathVariable int id) {
         LOGGER.info(String.format("GET - Find employee with id: %s", id));
-        return employeeService.findEmployee(id);
+        return service.showEmployeeDetails(id);
     }
 
     @DeleteMapping("/{id}")
@@ -65,7 +64,7 @@ public class EmployeeController {
             @Parameter(description = "ID of the employee")
             @PathVariable int id) {
         LOGGER.info(String.format("DELETE - Delete employee with id: %s", id));
-        employeeService.deleteEmployee(id);
+        service.deleteEmployee(id);
     }
 
 }

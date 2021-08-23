@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,9 +18,8 @@ public class Employee {
 
     private String name;
 
-    private double bookedHours;
-
-    private int workedDays;
-
     private boolean active = true;
+
+    @OneToMany
+    private List<Project> projects;
 }

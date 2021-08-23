@@ -21,9 +21,6 @@ public class ProjectRepository {
 
     public Optional<Project> findById(Integer id) {
         Project found = entityManager.find(Project.class, id);
-        if (!found.isActive()) {
-            found = null;
-        }
         return found != null ? Optional.of(found) : Optional.empty();
     }
 
@@ -33,6 +30,8 @@ public class ProjectRepository {
     }
 
     public List<Project> findAll() {
-        return entityManager.createQuery("SELECT p FROM Project p WHERE p.active = true", Project.class).getResultList();
+        return entityManager
+                .createQuery("SELECT p FROM Project p WHERE p.inProgress = true", Project.class)
+                .getResultList();
     }
 }

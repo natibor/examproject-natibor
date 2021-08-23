@@ -10,6 +10,6 @@ public class ProjectInfo {
     private int id;
     private String name;
     private String description;
-    private EmployeeInfo leader;
+    private boolean inProgress;
     private double totalWorkHours;
 }

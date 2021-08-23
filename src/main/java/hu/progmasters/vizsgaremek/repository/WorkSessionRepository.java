@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class WorkSessionRepository {
@@ -13,14 +14,14 @@ public class WorkSessionRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public WorkSession saveWorkSession(WorkSession toSave) {
+    public WorkSession save(WorkSession toSave) {
         entityManager.persist(toSave);
         return toSave;
     }
 
     public List<WorkSession> findByEmployeeId(Integer employeeId) {
         return entityManager.createQuery(
-                "SELECT w FROM WorkSession w WHERE w.employeeId = (?1)", WorkSession.class)
+                        "SELECT w FROM WorkSession w WHERE w.employeeId = (?1)", WorkSession.class)
                 .setParameter(1, employeeId).getResultList();
     }
 
@@ -31,4 +32,23 @@ public class WorkSessionRepository {
     }
 
 
+    public Optional<WorkSession> findById(Long id) {
+        WorkSession found = entityManager.find(WorkSession.class, id);
+        return found != null ? Optional.of(found) : Optional.empty();
+    }
+
+    public WorkSession update(WorkSession toUpdate) {
+        entityManager.merge(toUpdate);
+        return toUpdate;
+    }
+
+    public List<WorkSession> findAll() {
+        return entityManager
+                .createQuery("SELECT w FROM WorkSession w", WorkSession.class)
+                .getResultList();
+    }
+
+    public void delete(WorkSession workSession) {
+        entityManager.remove(workSession);
+    }
 }
