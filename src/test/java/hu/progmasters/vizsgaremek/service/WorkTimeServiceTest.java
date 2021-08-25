@@ -47,6 +47,7 @@ public class WorkTimeServiceTest {
     private EmployeeInfo employeeInfo;
     private Employee employeeInDatabase;
     private Employee employeeDeleted;
+    private Employee employeeUpdated;
 
     private ProjectCreateCommand projectCreateCommand;
     private Project project;
@@ -68,13 +69,13 @@ public class WorkTimeServiceTest {
         createTestData();
     }
 
-    @Test
     void createTestData() {
 
         employeeCreateCommand = new EmployeeCreateCommand();
         employeeCreateCommand.setName("Elon Musk");
 
         employee = modelMapper.map(employeeCreateCommand, Employee.class);
+//        employee.setId(1);
 
         employeeInfo = modelMapper.map(employeeCreateCommand, EmployeeInfo.class);
         employeeInfo.setId(1);
@@ -86,14 +87,15 @@ public class WorkTimeServiceTest {
         employeeDeleted.setId(1);
         employeeDeleted.setActive(false);
 
+        employeeUpdated = modelMapper.map(employeeCreateCommand, Employee.class);
 
         projectCreateCommand = new ProjectCreateCommand();
         projectCreateCommand.setName("Starship");
         projectCreateCommand.setDescription(
-                "It's not like they're unaware of it. " +
                 "I thought it would be funny to make it more pointy, so we did.");
 
         project = modelMapper.map(projectCreateCommand, Project.class);
+//        project.setId(1);
 
         projectInfo = modelMapper.map(projectCreateCommand, ProjectInfo.class);
         projectInfo.setId(1);
@@ -165,29 +167,43 @@ public class WorkTimeServiceTest {
     @Test
     void testSaveEmployee_Successful() {
         when(employeeRepository.save(employee)).thenReturn(employeeInDatabase);
-        when(employeeRepository.findAll()).thenReturn(List.of(employeeInDatabase));
-
         EmployeeInfo employeeSaved = workTimeService.saveEmployee(employeeCreateCommand);
         assertEquals(employeeInfo, employeeSaved);
 
         verify(employeeRepository, times(1)).save(any());
         verifyNoMoreInteractions(employeeRepository);
-
     }
 
     @Test
     void testSaveProject_Successful() {
         when(projectRepository.save(project)).thenReturn(projectInDatabase);
-        when(projectRepository.findAll()).thenReturn(List.of(projectInDatabase));
-
         ProjectInfo projectSaved = workTimeService.saveProject(projectCreateCommand);
         assertEquals(projectInfo, projectSaved);
 
         verify(projectRepository, times(1)).save(any());
         verifyNoMoreInteractions(projectRepository);
-
     }
 
+/* TODO
+    @Test
+    void testSaveWorkSession_Successful() {
+        employee.setId(1);
+        employeeUpdated.setProjects(List.of(project));
+
+        when(workSessionRepository.save(workSession)).thenReturn(workSessionInDatabase);
+        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+        when(workSessionRepository.findById(1L)).thenReturn(Optional.of(workSession));
+        when(employeeRepository.update(employee)).thenReturn(employeeUpdated);
+
+        WorkSessionInfo workSessionSaved = workTimeService.saveWorkSession(workSessionCreateCommand);
+
+        assertEquals(workSessionInfo, workSessionSaved);
+
+        verify(workSessionRepository, times(1)).save(any());
+        verifyNoMoreInteractions(workSessionRepository);
+    }
+*/
 
     @Test
     void testFindEmployee_ThrowsException() {
@@ -209,9 +225,55 @@ public class WorkTimeServiceTest {
 
     @Test
     void testShowEmployeeDetails() {
+        employeeInfo.setBookedHours(9.5);
+        employeeInfo.setWorkedDays(1);
+        employeeInfo.setProjects(List.of(project));
+        employee.setId(1);
+        project.setId(1);
+        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
+        when(workSessionRepository.findByEmployeeId(1)).thenReturn(List.of(workSession));
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+        assertThat(workTimeService.showEmployeeDetails(1))
+                .isEqualTo(employeeInfo);
 
+        verify(employeeRepository, times(1)).findById(1);
+        verify(workSessionRepository, times(1)).findByEmployeeId(1);
+        verify(projectRepository, times(1)).findById(1);
+        verifyNoMoreInteractions(workSessionRepository, employeeRepository, projectRepository);
 
     }
+
+    @Test
+    void testShowProjectDetails() {
+        projectInfo.setTotalWorkHours(9.5);
+        project.setId(1);
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+        when(workSessionRepository.findByProjectId(1)).thenReturn(List.of(workSession));
+        assertThat(workTimeService.showProjectDetails(1))
+                .isEqualTo(projectInfo);
+
+        verify(projectRepository, times(1)).findById(1);
+        verify(workSessionRepository, times(1)).findByProjectId(1);
+        verifyNoMoreInteractions(projectRepository, workSessionRepository);
+    }
+
+    @Test
+    void testShowWorkSessionDetails() {
+        workSession.setId(1L);
+        workSessionInfo.setEmployeeName("Elon Musk");
+        workSessionInfo.setProjectName("Starship");
+        when(workSessionRepository.findById(1L)).thenReturn(Optional.of(workSession));
+        when(employeeRepository.findById(1)).thenReturn(Optional.of(employee));
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+        assertThat(workTimeService.showWorkSessionDetails(1L))
+                .isEqualTo(workSessionInfo);
+
+        verify(workSessionRepository, times(1)).findById(1L);
+        verify(employeeRepository, times(1)).findById(1);
+        verify(projectRepository, times(1)).findById(1);
+        verifyNoMoreInteractions(workSessionRepository, employeeRepository, projectRepository);
+    }
+
 
     @Test
     void testListEmployees_EmptyList() {
@@ -261,19 +323,20 @@ public class WorkTimeServiceTest {
         verify(projectRepository, times(1)).update(projectToDelete);
         verifyNoMoreInteractions(projectRepository);
     }
+/* TODO
+    @Test
+    void testUpdateWorkSession_Succesful() {
+        when(workSessionRepository.update(workSession)).thenReturn(workSessionUpdated);
+//        when(workTimeService.showWorkSessionDetails(1L)).thenReturn(workSessionUpdated);
 
-//    @Test
-//    void testUpdateWorkSession_Succesful() {
-//        when(workSessionRepository.update(workSession)).thenReturn(workSessionUpdated);
-//        when(workTimeService.findWorkSession(1L)).thenReturn(workSession);
-//        workTimeService.updateWorkSession(1L, workSessionUpdateCommand);
-//        WorkSession workSessionToUpdate = workTimeService.findWorkSession(1L);
-//        assertEquals(workSessionToUpdate, workSessionUpdated);
-//        verify(workSessionRepository, times(2)).findById(1L);
-//        verify(workSessionRepository, times(1)).update(workSessionToUpdate);
-//        verifyNoMoreInteractions(workSessionRepository);
-//    }
-
+        workTimeService.updateWorkSession(1L, workSessionUpdateCommand);
+        WorkSession workSessionToUpdate = workTimeService.findWorkSession(1L);
+        assertEquals(workSessionToUpdate, workSessionUpdated);
+        verify(workSessionRepository, times(2)).findById(1L);
+        verify(workSessionRepository, times(1)).update(workSessionToUpdate);
+        verifyNoMoreInteractions(workSessionRepository);
+    }
+*/
 
     @Test
     void testDeleteWorkSession_throwsException() {
@@ -283,6 +346,14 @@ public class WorkTimeServiceTest {
         verifyNoMoreInteractions(workSessionRepository);
     }
 
+    @Test
+    public void testDeleteWorkSession_isCalled() {
+        workSession.setId(1L);
+        when(workSessionRepository.findById(1L)).thenReturn(Optional.of(workSession));
+        doNothing().when(workSessionRepository).delete(workSession);
+        workTimeService.deleteWorkSession(1L);
+        verify(workSessionRepository, times(1)).delete(workSession);
+    }
 
 
 }

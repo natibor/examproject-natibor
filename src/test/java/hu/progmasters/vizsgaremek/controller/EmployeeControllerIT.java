@@ -40,11 +40,6 @@ public class EmployeeControllerIT {
     private ProjectInfo projectInfo;
     private ProjectInfo projectInfoUpdated;
 
-    private WorkSessionCreateCommand workSessionCreateCommand;
-    private WorkSessionInfo workSessionInfo;
-    private WorkSessionUpdateCommand workSessionUpdateCommand;
-    private WorkSessionInfo workSessionInfoUpdated;
-
     @BeforeEach
     void initAll() {
         ModelMapper modelMapper = new ModelMapper();
@@ -76,27 +71,6 @@ public class EmployeeControllerIT {
         employeeInfoUpdated.setWorkedDays(1);
         employeeInfoUpdated.setProjects(List.of(modelMapper.map(projectInfo, Project.class)));
 
-        workSessionCreateCommand = new WorkSessionCreateCommand();
-        workSessionCreateCommand.setEmployeeId(1);
-        workSessionCreateCommand.setProjectId(1);
-        workSessionCreateCommand.setBookedHours(12.0);
-
-        workSessionInfo = new WorkSessionInfo();
-        workSessionInfo.setId(1L);
-        workSessionInfo.setEmployeeName("Elon Musk");
-        workSessionInfo.setProjectName("Starship");
-        workSessionInfo.setBookedHours(12.0);
-
-        workSessionUpdateCommand = new WorkSessionUpdateCommand();
-        workSessionUpdateCommand.setProjectId(1);
-        workSessionUpdateCommand.setBookedHours(9.5);
-
-        workSessionInfoUpdated = new WorkSessionInfo();
-        workSessionInfoUpdated.setId(1L);
-        workSessionInfoUpdated.setEmployeeName("Elon Musk");
-        workSessionInfoUpdated.setProjectName("Starship");
-        workSessionInfoUpdated.setBookedHours(9.5);
-
     }
 
     @Test
@@ -111,7 +85,6 @@ public class EmployeeControllerIT {
 
     @Test
     void testSave_validCommand_validResponse() throws Exception {
-        createValidProject();
         createValidEmployee();
     }
 
@@ -124,20 +97,10 @@ public class EmployeeControllerIT {
 
     @Test
     void testDelete_validId_validDeletedResponse() throws Exception {
-        createValidProject();
         createValidEmployee();
 
         mockMvc.perform(delete("/api/employees/1"))
                 .andExpect(status().isOk());
-    }
-
-
-    private void createValidProject() throws Exception {
-        mockMvc.perform(post("/api/projects")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(projectCreateCommand)))
-                .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(projectInfo)));
     }
 
     private void createValidEmployee() throws Exception {
@@ -146,14 +109,6 @@ public class EmployeeControllerIT {
                         .content(objectMapper.writeValueAsString(employeeCreateCommand)))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(objectMapper.writeValueAsString(employeeInfo)));
-    }
-
-    private void createValidWorkSession() throws Exception {
-        mockMvc.perform(post("/api/worksessions")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(workSessionCreateCommand)))
-                .andExpect(status().isCreated())
-                .andExpect(content().json(objectMapper.writeValueAsString(workSessionInfo)));
     }
 
     private void employeeNotFound() throws Exception {

@@ -122,12 +122,11 @@ public class WorkSessionControllerIT {
         createValidEmployee();
         createValidWorkSession();
 
-        mockMvc.perform(put("/api/worksessions/id")
+        mockMvc.perform(put("/api/worksessions/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(workSessionUpdateCommand)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(workSessionInfoUpdated)));
-
     }
 
     @Test

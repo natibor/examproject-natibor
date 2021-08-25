@@ -15,5 +15,5 @@ public class ProjectCreateCommand {
     @NotBlank(message = "Can't be blank!")
     private String description;
 
-    private boolean inProgress;
+    private boolean inProgress = true;
 }

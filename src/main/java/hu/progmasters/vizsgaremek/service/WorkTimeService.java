@@ -130,11 +130,16 @@ public class WorkTimeService {
         workSessionRepository.save(toSave);
         Employee toUpdate = findEmployee(command.getEmployeeId());
         Project toAdd = findProject(command.getProjectId());
-        List<Project> projects = toUpdate.getProjects();
-        if (!projects.contains(toAdd)) {
+        List<Project> projects = new ArrayList<>();
+        if (toUpdate.getProjects() != null) {
+            if (!toUpdate.getProjects().contains(toAdd)) {
+                projects.add(toAdd);
+                toUpdate.setProjects(projects);
+                employeeRepository.update(toUpdate);
+            }
+        } else {
             projects.add(toAdd);
             toUpdate.setProjects(projects);
-            employeeRepository.update(toUpdate);
         }
         return showWorkSessionDetails(toSave.getId());
     }
@@ -175,7 +180,7 @@ public class WorkTimeService {
         return showWorkSessionDetails(id);
     }
 
-    public void deleteWorkSession (Long id) {
+    public void deleteWorkSession(Long id) {
         workSessionRepository.delete(findWorkSession(id));
     }
 }
